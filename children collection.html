@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Collection - Preeti Collection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00bcd4;
+            --secondary: #ff4081;
+            --accent: #ff9800;
+            --light: #e0f7fa;
+            --dark: #00838f;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+                        url('https://storage.googleapis.com/preeti-collection/kids-hero-bg.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            color: var(--dark);
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+        
+        .product-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .discount-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-description {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-success {
+            background: linear-gradient(to right, #25D366, #1ebe5d);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+        
+        .category-filter {
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            background: white;
+            border: 2px solid var(--light);
+            border-radius: 30px;
+            padding: 8px 20px;
+            margin: 0 5px 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            font-size: 24px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            transition: all 0.3s;
+        }
+        
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            color: white;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: auto; /* This ensures footer sticks to bottom */
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .offer-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .size-selector {
+            margin: 10px 0;
+        }
+        
+        .size-option {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            line-height: 35px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .size-option:hover, .size-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        .npr-price {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .npr-price::before {
+            content: "NPR ";
+        }
+        
+        .age-group {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-tshirt me-2"></i>Preeti Collection & Menika Bastralya
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="men collection.html"><i class="fas fa-male me-1"></i> Men's Collection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="women collection.html"><i class="fas fa-female me-1"></i> Women's Collection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="children collection.html"><i class="fas fa-child me-1"></i> Kids Collection</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Kids Fashion Collection</h1>
+            <p class="lead">Adorable and comfortable clothing for your little ones</p>
+            <a href="#products" class="btn btn-light btn-lg mt-3">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Category Filter -->
+    <section class="container py-5">
+        <div class="category-filter text-center">
+            <button class="category-btn active" data-filter="all">All Products</button>
+            <button class="category-btn" data-filter="boys">Boys Wear</button>
+            <button class="category-btn" data-filter="girls">Girls Wear</button>
+            <button class="category-btn" data-filter="sets">Clothing Sets</button>
+            <button class="category-btn" data-filter="ethnic">Ethnic Wear</button>
+            <button class="category-btn" data-filter="accessories">Accessories</button>
+        </div>
+
+        <!-- Offer Banner -->
+        <div class="offer-banner">
+            <h3><i class="fas fa-gift me-2"></i> Special Kids Offer!</h3>
+            <p class="mb-0">Get flat 30% off on all kids clothing. Buy 2 get 1 free on selected items!</p>
+        </div>
+
+        <!-- Products Grid -->
+        <h2 class="section-title" id="products">Our Kids Collection</h2>
+        <div class="product-grid">
+            <!-- Product 1 - Boys T-Shirt & Shorts Set -->
+            <div class="product-card" data-category="boys sets">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Boys T-Shirt & Shorts Set" class="product-image">
+                    <div class="price-tag">NPR 899</div>
+                    <div class="discount-tag">25% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 3-5 Years</div>
+                    <h3 class="product-title">Boys T-Shirt & Shorts Set</h3>
+                    <p class="product-description">Comfortable cotton t-shirt and shorts set with cartoon prints.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="3-4Y">3-4Y</span>
+                        <span class="size-option selected" data-size="4-5Y">4-5Y</span>
+                        <span class="size-option" data-size="5-6Y">5-6Y</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="original-price">NPR 1,199</span>
+                            <span class="npr-price">899</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Boys T-Shirt & Shorts Set" 
+                                data-price="899"
+                                data-image="https://storage.googleapis.com/preeti-collection/boys-tshorts-set.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 - Girls Frock Dress -->
+            <div class="product-card" data-category="girls">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Girls Frock Dress" class="product-image">
+                    <div class="price-tag">NPR 1,199</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 4-6 Years</div>
+                    <h3 class="product-title">Girls Frock Dress</h3>
+                    <p class="product-description">Beautiful floral frock dress with lace detailing.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="4-5Y">4-5Y</span>
+                        <span class="size-option selected" data-size="5-6Y">5-6Y</span>
+                        <span class="size-option" data-size="6-7Y">6-7Y</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="npr-price">1,199</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Girls Frock Dress" 
+                                data-price="1199"
+                                data-image="https://storage.googleapis.com/preeti-collection/girls-frock-dress.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 - Kids Ethnic Set -->
+            <div class="product-card" data-category="ethnic sets">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1589310243389-96a5483213a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Kids Ethnic Set" class="product-image">
+                    <div class="price-tag">NPR 1,499</div>
+                    <div class="discount-tag">20% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 2-4 Years</div>
+                    <h3 class="product-title">Kids Ethnic Set</h3>
+                    <p class="product-description">Traditional kurta pajama set for boys and girls.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="2-3Y">2-3Y</span>
+                        <span class="size-option selected" data-size="3-4Y">3-4Y</span>
+                        <span class="size-option" data-size="4-5Y">4-5Y</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="original-price">NPR 1,799</span>
+                            <span class="npr-price">1,499</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Kids Ethnic Set" 
+                                data-price="1499"
+                                data-image="https://storage.googleapis.com/preeti-collection/kids-ethnic-set.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 4 - Baby Romper -->
+            <div class="product-card" data-category="sets">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Baby Romper" class="product-image">
+                    <div class="price-tag">NPR 699</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 6-12 Months</div>
+                    <h3 class="product-title">Baby Romper</h3>
+                    <p class="product-description">Soft cotton romper with cute animal prints.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="6-9M">6-9M</span>
+                        <span class="size-option selected" data-size="9-12M">9-12M</span>
+                        <span class="size-option" data-size="12-18M">12-18M</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="npr-price">699</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Baby Romper" 
+                                data-price="699"
+                                data-image="https://storage.googleapis.com/preeti-collection/baby-romper.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 5 - Girls Lehenga Choli -->
+            <div class="product-card" data-category="girls ethnic">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1589810635657-232948472d98?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Girls Lehenga Choli" class="product-image">
+                    <div class="price-tag">NPR 2,199</div>
+                    <div class="discount-tag">30% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 5-8 Years</div>
+                    <h3 class="product-title">Girls Lehenga Choli</h3>
+                    <p class="product-description">Beautiful lehenga choli set for festivals and weddings.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="5-6Y">5-6Y</span>
+                        <span class="size-option selected" data-size="6-7Y">6-7Y</span>
+                        <span class="size-option" data-size="7-8Y">7-8Y</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="original-price">NPR 2,999</span>
+                            <span class="npr-price">2,199</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Girls Lehenga Choli" 
+                                data-price="2199"
+                                data-image="https://storage.googleapis.com/preeti-collection/girls-lehenga-choli.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 6 - Boys Jeans & Shirt -->
+            <div class="product-card" data-category="boys">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1593030103066-0093718efeb9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Boys Jeans & Shirt" class="product-image">
+                    <div class="price-tag">NPR 1,299</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 6-9 Years</div>
+                    <h3 class="product-title">Boys Jeans & Shirt</h3>
+                    <p class="product-description">Stylish denim jeans and casual shirt set.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="6-7Y">6-7Y</span>
+                        <span class="size-option selected" data-size="7-8Y">7-8Y</span>
+                        <span class="size-option" data-size="8-9Y">8-9Y</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="npr-price">1,299</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Boys Jeans & Shirt" 
+                                data-price="1299"
+                                data-image="https://storage.googleapis.com/preeti-collection/boys-jeans-shirt.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 7 - Kids Winter Set -->
+            <div class="product-card" data-category="sets">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1571945153237-4929e783af4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Kids Winter Set" class="product-image">
+                    <div class="price-tag">NPR 1,799</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: 3-5 Years</div>
+                    <h3 class="product-title">Kids Winter Set</h3>
+                    <p class="product-description">Warm winter jacket with matching pants and cap.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Size:</strong>
+                        <span class="size-option" data-size="3-4Y">3-4Y</span>
+                        <span class="size-option selected" data-size="4-5Y">4-5Y</span>
+                        <span class="size-option" data-size="5-6Y">5-6Y</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="npr-price">1,799</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Kids Winter Set" 
+                                data-price="1799"
+                                data-image="https://storage.googleapis.com/preeti-collection/kids-winter-set.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 8 - Kids Accessories Pack -->
+            <div class="product-card" data-category="accessories">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+                         alt="Kids Accessories Pack" class="product-image">
+                    <div class="price-tag">NPR 599</div>
+                    <div class="discount-tag">15% OFF</div>
+                </div>
+                <div class="product-info">
+                    <div class="age-group">Age: All Ages</div>
+                    <h3 class="product-title">Kids Accessories Pack</h3>
+                    <p class="product-description">Set of hair clips, bands, and cute accessories.</p>
+                    
+                    <div class="size-selector">
+                        <strong>Type:</strong>
+                        <span class="size-option" data-size="Hair">Hair</span>
+                        <span class="size-option selected" data-size="Mixed">Mixed</span>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <strong>Qty:</strong>
+                        <button class="quantity-btn minus">-</button>
+                        <input type="text" class="quantity-input" value="1" readonly>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            <span class="original-price">NPR 699</span>
+                            <span class="npr-price">599</span>
+                        </div>
+                        <button class="btn btn-success btn-sm order-btn" 
+                                data-product="Kids Accessories Pack" 
+                                data-price="599"
+                                data-image="https://storage.googleapis.com/preeti-collection/kids-accessories-pack.jpg">
+                            <i class="fab fa-whatsapp me-1"></i> Order Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/9779855040149?text=Hi%20Preeti%20Collection%2C%20I%20want%20to%20order%20kids%20clothes" 
+       class="floating-whatsapp" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <h4>Preeti Collection & Menika Vastralya</h4>
+            <p>Sumo Counter, Maulapur-5, Rautahat</p>
+            <p>Contact: +977-9811191711 | WhatsApp: +977-9855040149</p>
+            <p class="mb-0">&copy; 2025 Preeti Collection. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap & Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Category Filter Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.category-btn');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    productCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category').includes(filterValue)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Size Selection
+            const sizeOptions = document.querySelectorAll('.size-option');
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.closest('.size-selector');
+                    parent.querySelectorAll('.size-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Quantity Selector
+            const quantityButtons = document.querySelectorAll('.quantity-btn');
+            quantityButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('.quantity-input');
+                    let value = parseInt(input.value);
+                    
+                    if (this.classList.contains('plus')) {
+                        value++;
+                    } else if (this.classList.contains('minus') && value > 1) {
+                        value--;
+                    }
+                    
+                    input.value = value;
+                });
+            });
+            
+            // WhatsApp Order Functionality
+            const orderButtons = document.querySelectorAll('.order-btn');
+            orderButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productCard = this.closest('.product-card');
+                    const productName = this.getAttribute('data-product');
+                    const productPrice = this.getAttribute('data-price');
+                    const productImage = this.getAttribute('data-image');
+                    
+                    // Get selected size
+                    const selectedSize = productCard.querySelector('.size-option.selected').getAttribute('data-size');
+                    
+                    // Get quantity
+                    const quantity = productCard.querySelector('.quantity-input').value;
+                    
+                    // Get age group
+                    const ageGroup = productCard.querySelector('.age-group').textContent;
+                    
+                    // Create WhatsApp message with product image link
+                    const message = `Hello Preeti Collection! I would like to order:
+
+👶 *Product:* ${productName}
+📏 *Size:* ${selectedSize}
+👶 *Age Group:* ${ageGroup}
+🔢 *Quantity:* ${quantity}
+💰 *Price:* NPR ${productPrice}
+
+🖼️ *Product Image:* ${productImage}
+
+Please confirm my order and provide delivery details.`;
+                    
+                    // Encode message for URL
+                    const encodedMessage = encodeURIComponent(message);
+                    
+                    // Open WhatsApp with pre-filled message
+                    window.open(`https://wa.me/9779855040149?text=${encodedMessage}`, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
